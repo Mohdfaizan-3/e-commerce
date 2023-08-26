@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import Button from "../../../components/button/Button";
 import {
-  createUserDocumentFromAuth,
   signInUserWithEmailAndPassword,
   signInWithGooglePopup,
 } from "../../../utils/firebase/firebase";
-import "./style.scss"
+import "./style.scss";
 
 const defaultFormFeilds = {
   email: "",
   password: "",
 };
 
-
-
 const SignInForm = () => {
   const [formFeilds, setFormFeilds] = useState(defaultFormFeilds);
   const { email, password } = formFeilds;
-
+  // const { setCurrentUser } = useContext(UserContext);
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormFeilds({
@@ -53,52 +50,61 @@ const SignInForm = () => {
   };
 
   const signInGoogleUser = async () => {
-    const { user } = await signInWithGooglePopup();
-    const userDocRef = await createUserDocumentFromAuth(user);
-    console.log(userDocRef);
+    await signInWithGooglePopup();
   };
 
   return (
     <>
-    <div className="signInForm-container">
-    <h2> have an account? sign in</h2>
+      <div className="signInForm-container">
+        <h2> have an account? sign in</h2>
 
-      <form onSubmit={handleSubmit}>
-        <label id="email">email</label>
-        <input
-          type="email"
-          placeholder="enter the email"
-          onChange={handleChange}
-          value={email}
-          required
-          name="email"
-        />
+        <form onSubmit={handleSubmit}>
+          <label id="email">email</label>
+          <input
+            type="email"
+            placeholder="enter the email"
+            onChange={handleChange}
+            value={email}
+            required
+            name="email"
+          />
 
-        <label id="password">password</label>
-        <input
-          type="password"
-          placeholder="enter the password"
-          onChange={handleChange}
-          value={password}
-          required
-          name="password"
-        />
+          <label id="password">password</label>
+          <input
+            type="password"
+            placeholder="enter the password"
+            onChange={handleChange}
+            value={password}
+            required
+            name="password"
+          />
 
-        <div style={{ display: "flex", width: "100%", marginTop:"20px", justifyContent:'space-evenly'}}>
-          <Button style={{width:"80px"}} type="submit" buttonType={"inverted"}>
-            submit
-          </Button>
-          <Button
-          style={{width:"80px"}}
-            type="button"
-            buttonType={"google"}
-            onClick={signInGoogleUser}
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              marginTop: "20px",
+              justifyContent: "space-evenly",
+            }}
           >
-            google signIn
-          </Button>
-        </div>
-      </form>
-    </div>
+            <Button
+              style={{ width: "80px" }}
+              type="submit"
+              buttonType={"inverted"}
+            >
+              submit
+            </Button>
+            <Button
+              style={{ width: "80px" }}
+              type="button"
+              buttonType={"google"}
+              onClick={signInGoogleUser}
+            >
+              google signIn
+            </Button>
+          </div>
+        </form>
+      </div>
     </>
   );
 };
