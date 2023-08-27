@@ -14,12 +14,13 @@ export const cartContext = createContext({
 const addCartItem = (cartItems, productToAdd) => {
   const itemExist = cartItems.find((item) => item.id === productToAdd.id);
   if (itemExist) {
-    return cartItems.map((item) => item.id === productToAdd.id)
-      ? [...cartItems, { ...productToAdd, quantity: cartItems.quantity + 1 }]
-      : cartItems;
-  } else {
-    return [...cartItems, { ...productToAdd, quantity: 1 }];
+    return cartItems.map((item) =>
+      item.id === productToAdd.id
+        ? { ...item, quantity: item.quantity + 1, price: 2 * item.price }
+        : item
+    );
   }
+  return [...cartItems, { ...productToAdd, quantity: 1 }];
 };
 
 const removeCartItem = (cartItems, cartItemToRemove) => {
@@ -33,7 +34,11 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
 
   return cartItems.map((cartItem) =>
     cartItem.id === cartItemToRemove.id
-      ? { ...cartItem, quantity: cartItem.quantity - 1 }
+      ? {
+          ...cartItem,
+          quantity: cartItem.quantity - 1,
+          price: cartItem.price / 2,
+        }
       : cartItem
   );
 };

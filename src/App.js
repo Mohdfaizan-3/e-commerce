@@ -5,6 +5,7 @@ import Navigation from "./routes/Navigation/Navigation.jsx";
 import Shop from "./routes/Shop/ShopComponent";
 import SignInPage from "./routes/auth/signIn/SignInPage.jsx";
 import Checkout from "./routes/checkout/Checkout";
+import ShopPreview from "./routes/Shop/ShopPreview";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,6 +20,11 @@ function App() {
         {
           path: "shop",
           element: <Shop />,
+        },
+       
+        {
+          path: "shop/:title",
+          element: <ShopPreview />,
         },
         {
           path: "signIn",

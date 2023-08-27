@@ -9,7 +9,16 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  setDoc,
+  writeBatch,
+} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -35,7 +44,10 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth, additionalInfo={}) => {
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInfo = {}
+) => {
   if (!userAuth) return;
   const userDocRef = doc(db, "users", userAuth.uid);
   const snapshot = await getDoc(userDocRef);
@@ -49,7 +61,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo={}) =>
         displayName,
         email,
         createdAt,
-        ...additionalInfo
+        ...additionalInfo,
       });
     } catch (error) {
       console.error(error.message);
@@ -65,15 +77,40 @@ export const createUserAuthWithEmailAndPassword = async (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password);
 };
 
-
 export const signInUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
   return signInWithEmailAndPassword(auth, email, password);
 };
 
-export const authStateChangeEventListener = (callback) =>  onAuthStateChanged(auth, callback);
+export const authStateChangeEventListener = (callback) =>
+  onAuthStateChanged(auth, callback);
 
-export const signOutUser = async() => {
- return await signOut(auth);
-}
+export const signOutUser = async () => {
+  return await signOut(auth);
+};
+
+export const addCollectionToDocument = async (collectionKey, objectToAdd) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
+
+  objectToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+};
+
+export const getCategoriesFromDoc = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+
+  const querySnapShot = await getDocs(q);
+  const categoryMap = querySnapShot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title] = items;
+    return acc;
+  }, {});
+  return categoryMap;
+};
