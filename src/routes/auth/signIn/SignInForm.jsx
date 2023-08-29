@@ -45,7 +45,6 @@ const SignInForm = () => {
           break;
         default:
           console.error(error);
-          toast.error(error);
       }
     }
 
