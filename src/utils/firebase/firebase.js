@@ -10,6 +10,7 @@ import {
   signOut,
 } from "firebase/auth";
 import {
+  addDoc,
   collection,
   doc,
   getDoc,
@@ -113,4 +114,61 @@ export const getCategoriesFromDoc = async () => {
     return acc;
   }, {});
   return categoryMap;
+};
+
+// export const postPurchasedItems = async (userId, items, cartTotal) => {
+//   try {
+//     const userRef = doc(db, "users", userId);
+//     const purchasedItemsCollection = collection(userRef, "purchasedItems");
+//     const newPaymentDetail = {
+//       items: items,
+//       total: cartTotal,
+//       purchasedAt: new Date(),
+//     };
+
+//     await addDoc(purchasedItemsCollection, newPaymentDetail);
+
+//     console.log("Purchased items added successfully.");
+//   } catch (error) {
+//     console.error("Error adding purchased items: ", error);
+//   }
+// };
+
+
+
+
+export const postPurchasedItems = async (userId, items, cartTotal) => {
+  if(!items || !userId || !cartTotal) return;
+  try {
+    const userRef = doc(db, 'users', userId);
+
+    // Fetch existing payment details
+    const docSnap = await getDoc(userRef);
+    let paymentDetails = [];
+    if (docSnap.exists()) {
+      paymentDetails = docSnap.data().paymentDetails || [];
+    }
+
+    // Prepare new payment details
+    const newPaymentDetail = {
+      purchasedItems: items,
+      total: cartTotal,
+      purchasedAt: new Date()
+    };
+
+    
+    // Update Firestore record
+
+    await setDoc(
+      userRef,
+      { 
+        paymentDetails: [...paymentDetails, newPaymentDetail]
+      },
+      { merge: true }
+    );
+
+    console.log("Purchased items added successfully.");
+  } catch (error) {
+    console.error("Error adding purchased items: ", error);
+  }
 };
