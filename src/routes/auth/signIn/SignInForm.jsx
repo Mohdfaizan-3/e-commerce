@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import Button from "../../../components/button/Button";
 import {
   signInUserWithEmailAndPassword,
@@ -33,16 +34,18 @@ const SignInForm = () => {
     try {
       await signInUserWithEmailAndPassword(email, password);
       resetFormFields();
+      toast.success("sign in successfully");
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
-          alert("wrong password");
+          toast.error("wrong password");
           break;
         case "auth/user-not-found":
-          alert("user not found");
+          toast.error("user not found");
           break;
         default:
           console.error(error);
+          toast.error(error);
       }
     }
 

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import Button from "../../../components/button/Button";
 import {
   createUserAuthWithEmailAndPassword,
   createUserDocumentFromAuth,
 } from "../../../utils/firebase/firebase";
-import Button from "../../../components/button/Button";
-import  './styles.scss'
+import "./styles.scss";
 
 const defaultFormFeilds = {
   displayName: "",
@@ -32,12 +33,13 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("password does not match");
+      toast.error("password does not match");
       return;
     }
 
     if (password.length < 5) {
-      alert("enter password length greater than 5");
+      toast.error("enter password length greater than 5");
+
       return;
     }
 
@@ -47,11 +49,13 @@ const Form = () => {
         password
       );
       await createUserDocumentFromAuth(user, { displayName });
+      toast.success("account created")
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
-        alert("cannot create user- email already in use");
+        toast.error("cannot create user- email already in use");
       } else {
         console.log("user creation encountered an error", error);
+        toast.error(error);
       }
     }
 
@@ -60,7 +64,7 @@ const Form = () => {
 
   return (
     <div className="SignUpform-container">
-    <h2>don't have an account? sign up</h2>
+      <h2>don't have an account? sign up</h2>
 
       <form onSubmit={handleSubmit}>
         <label id="name">Name</label>
@@ -107,7 +111,9 @@ const Form = () => {
           autoComplete="false"
         />
 
-<Button type="submit" buttonType={"inverted"}>submit</Button>
+        <Button type="submit" buttonType={"inverted"}>
+          submit
+        </Button>
       </form>
     </div>
   );

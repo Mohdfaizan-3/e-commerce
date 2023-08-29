@@ -5,6 +5,7 @@ import Shop from "./routes/Shop/ShopComponent";
 import ShopPreview from "./routes/Shop/ShopPreview";
 import SignInPage from "./routes/auth/signIn/SignInPage.jsx";
 import Checkout from "./routes/checkout/Checkout";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const router = createBrowserRouter([
@@ -35,6 +36,7 @@ function App() {
   return (
     <div className="App">
       <RouterProvider router={router} />
+      <ToastContainer/>
     </div>
   );
 }
