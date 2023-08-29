@@ -11,13 +11,12 @@ export const UserContext = createContext({
 
 const UserContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  console.log('current',currentUser)
   useEffect(() => {
     const unsubscribe = authStateChangeEventListener((user) => {
       if (user) {
         createUserDocumentFromAuth(user);
       }
-      console.log(user)
+      
 
       setCurrentUser(user);
     });

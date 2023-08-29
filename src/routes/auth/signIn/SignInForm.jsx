@@ -67,6 +67,7 @@ const SignInForm = () => {
             value={email}
             required
             name="email"
+            autoComplete="true"
           />
 
           <label id="password">password</label>
@@ -77,6 +78,7 @@ const SignInForm = () => {
             value={password}
             required
             name="password"
+            autoComplete="false"
           />
 
           <div

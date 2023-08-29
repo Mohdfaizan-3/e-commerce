@@ -71,6 +71,7 @@ const Form = () => {
           value={displayName}
           required
           name="displayName"
+          autoComplete="true"
         />
 
         <label id="email">email</label>
@@ -81,6 +82,7 @@ const Form = () => {
           value={email}
           required
           name="email"
+          autoComplete="true"
         />
 
         <label id="password">password</label>
@@ -91,6 +93,7 @@ const Form = () => {
           value={password}
           required
           name="password"
+          autoComplete="false"
         />
 
         <label id="confirmPassword">confirm Password</label>
@@ -101,6 +104,7 @@ const Form = () => {
           value={confirmPassword}
           required
           name="confirmPassword"
+          autoComplete="false"
         />
 
 <Button type="submit" buttonType={"inverted"}>submit</Button>
