@@ -167,7 +167,6 @@ export const postPurchasedItems = async (userId, items, cartTotal) => {
       { merge: true }
     );
 
-    console.log("Purchased items added successfully.");
   } catch (error) {
     console.error("Error adding purchased items: ", error);
   }
