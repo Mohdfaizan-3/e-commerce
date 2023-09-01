@@ -17,7 +17,7 @@ const addCartItem = (cartItems, productToAdd) => {
   if (itemExist) {
     return cartItems.map((item) =>
       item.id === productToAdd.id
-        ? { ...item, quantity: item.quantity + 1, price: 2 * item.price }
+        ? { ...item, quantity: item.quantity + 1, price: item.price }
         : item
     );
   }
@@ -38,7 +38,7 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
       ? {
           ...cartItem,
           quantity: cartItem.quantity - 1,
-          price: cartItem.price / 2,
+          price: cartItem.price,
         }
       : cartItem
   );
